@@ -6,7 +6,6 @@ const Search = ({search, setSearch, handleSearch}) => {
         <input 
           placeholder="Search Book here..."
           name="input"
-          required
           value={search}
           onChange={(e)=> setSearch(e.target.value)} 
           className="w-full text-sm focus:outline-none px-8 py-2 rounded-2xl bg-white" />
