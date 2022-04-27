@@ -18,17 +18,19 @@ const Books = ({booksPerPage}) => {
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)
 
+  const [bookmarks, setBookmarks] = useState([])
+
   const fetchData = async () => {
     await fetch(`${keyword}?categoryId=${id}`)
       .then(response => response.json())
       .then(data => {
         setIsLoading(false)
         setBooks(data)
-        const endOffset = itemOffset + booksPerPage;
+        const endOffset = itemOffset + booksPerPage
         console.log(`Loading books from ${itemOffset} to ${endOffset}`)
         setCurrentBooks(data.slice(itemOffset, endOffset))
         setPageCount(Math.ceil(data.length / booksPerPage))
-        console.log(data)
+        // console.log(data)
       }).catch(error => {
         setIsLoading(false)
         setError(error.message)
@@ -44,8 +46,22 @@ const Books = ({booksPerPage}) => {
     // console.log(filteredResults)
   }
 
+  const handleBookmarks = (bookId) => {
+    let myBooks = []
+    const bookmarked = books.filter((book) => book.id === bookId) //1
+    myBooks = [...bookmarked] //new array from bookmarked book //2
+
+    const listBooks = bookmarks.map(book => book.id !== bookId ? [...bookmarks, ...myBooks] : false)
+    // setBookmarks(listBooks)
+   
+    setBookmarks(oldArray => [...oldArray, listBooks])
+    console.log('bookmarked ', bookmarked)
+    console.log('listBooks ', listBooks)
+    console.log('bookmarks ', bookmarks)
+  }
+
   useEffect(() => {
-    setTimeout(()=> {fetchData()}, 1000)
+    setTimeout(()=> {fetchData()}, 750)
   }, [id,itemOffset, booksPerPage, search])
 
   const handlePageClick = (event) => {
@@ -77,6 +93,9 @@ const Books = ({booksPerPage}) => {
               alt={book.title} />
             <footer className="py-2 flex flex-row justify-between">
               <h3 className="text-xs">{book.title}</h3>
+              <button onClick={() => handleBookmarks(book.id)} title="bookmark">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
+              </button>
             </footer>
           </article>
           ))
@@ -96,11 +115,11 @@ const Books = ({booksPerPage}) => {
             containerClassName="pagination"
             activeClassName="active"
             breakLabel="..."
-            nextLabel="next >"
+            nextLabel="next"
             onPageChange={handlePageClick}
             pageRangeDisplayed={5}
             pageCount={pageCount}
-            previousLabel="< prev"
+            previousLabel="prev"
             renderOnZeroPageCount={null}
           />
         }
