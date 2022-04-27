@@ -18,7 +18,7 @@ const Books = ({booksPerPage}) => {
   const [pageCount, setPageCount] = useState(0)
   const [itemOffset, setItemOffset] = useState(0)
 
-  const [bookmarks, setBookmarks] = useState([])
+  const [bookmarks, setBookmarks] = useState(JSON.parse(localStorage.getItem('bookmarks')) || [])
 
   const fetchData = async () => {
     await fetch(`${keyword}?categoryId=${id}`)
@@ -38,6 +38,10 @@ const Books = ({booksPerPage}) => {
       })
   }
 
+  useEffect(() => {
+    setTimeout(()=> {fetchData()}, 750)
+  }, [id, itemOffset, booksPerPage, search])
+
   const handleSearch = (e) => {
     e.preventDefault()
     const filteredResults = currentBooks.filter( book => ((book.title).toLowerCase()).includes(search.toLowerCase()))
@@ -46,34 +50,25 @@ const Books = ({booksPerPage}) => {
     // console.log(filteredResults)
   }
 
-  const handleBookmarks = (bookId) => {
-    let myBooks = []
-    const bookmarked = books.filter((book) => book.id === bookId) //1
-    myBooks = [...bookmarked] //new array from bookmarked book //2
-
-    const listBooks = bookmarks.map(book => book.id !== bookId ? [...bookmarks, ...myBooks] : false)
-    // setBookmarks(listBooks)
-   
-    setBookmarks(oldArray => [...oldArray, listBooks])
-    console.log('bookmarked ', bookmarked)
-    console.log('listBooks ', listBooks)
-    console.log('bookmarks ', bookmarks)
+  const handleBookmarks = (book) => {
+    if(bookmarks.indexOf(book) !== -1) return
+    setBookmarks([...bookmarks, book])
+    localStorage.setItem('bookmarks', JSON.stringify(bookmarks))
   }
-
-  useEffect(() => {
-    setTimeout(()=> {fetchData()}, 750)
-  }, [id,itemOffset, booksPerPage, search])
 
   const handlePageClick = (event) => {
     const newOffset = (event.selected * booksPerPage) % books.length
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    )
+    console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`)
     setItemOffset(newOffset)
   }
 
   return (
     <div className='books px-16 py-8'>
+      <ul className='grid grid-cols-12'>
+        {bookmarks.map(book => (
+          <li key={book.id}>{book.id}</li>
+        ))}
+      </ul>
       <div className='flex flex-row items-center justify-between mb-12 pb-4 border-b border-gray-50'>
         <div className='p-2 bg-white rounded-tl-lg rounded-br-lg shadow-sm max-w-max'>
           <h1 className='text-sm font-semibold'>{name}</h1>
@@ -93,7 +88,7 @@ const Books = ({booksPerPage}) => {
               alt={book.title} />
             <footer className="py-2 flex flex-row justify-between">
               <h3 className="text-xs">{book.title}</h3>
-              <button onClick={() => handleBookmarks(book.id)} title="bookmark">
+              <button onClick={() => handleBookmarks(book)} title="bookmark">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
               </button>
             </footer>

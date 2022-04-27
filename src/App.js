@@ -29,7 +29,7 @@ const App = () => {
 
   return (
     <main className='bg-blue-100 pb-12'>
-      <Header />
+      <Header bookmarks={new Array(10)} />
       <Switch>
         <Route exact path="/">
           <Home items={items} error={error} isLoading={isLoading} />
