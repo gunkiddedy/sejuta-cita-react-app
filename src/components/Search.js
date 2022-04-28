@@ -14,7 +14,7 @@ const Search = ({search, setSearch, handleSearch}) => {
         <button 
           type="submit" 
           className="bg-blue-500 py-2 px-8 text-white rounded-full text-sm font-semibold">
-            Search
+          Search
         </button>
       </form>
   )
