@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import ReactPaginate from 'react-paginate'
 import { useStore } from '../store/store'
-import Book from './Book'
 
+import Book from './Book'
 import Search from './Search'
 
 
 const Books = ({booksPerPage}) => {
-  const {id, name} = useParams()
 
+  const {id, name} = useParams()
   const keyword = '/fee-assessment-books' //fee-assessment-books?categoryId=1
   const [books, setBooks] = useState([])
   const [error, setError] = useState(null)
@@ -88,6 +88,7 @@ const Books = ({booksPerPage}) => {
       {isLoading && <p className='text-center'>Loading data from server...</p>}
 
       {!isLoading && currentBooks.length <= 0 && <p className='text-center'>No data found</p>}
+
       <div className='book pb-8 grid lg:grid-cols-5 md:grid-cols-3 gap-5'>
         { !isLoading && currentBooks && currentBooks.map((book, index) => (
           <Book 
