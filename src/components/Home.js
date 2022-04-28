@@ -11,4 +11,5 @@ const Home = ({items, error, isLoading}) => {
     </main>
   )
 }
+
 export default Home
