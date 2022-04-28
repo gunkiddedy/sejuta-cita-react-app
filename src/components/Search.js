@@ -2,7 +2,7 @@ const Search = ({search, setSearch, handleSearch}) => {
   return (
       <form 
         onSubmit={handleSearch}
-        className="w-1/2 flex flex-row items-center px-0 space-x-4">
+        className="w-full md:w-1/2 flex flex-row items-center px-0 space-x-4">
 
         <input 
           placeholder="Search Book here..."

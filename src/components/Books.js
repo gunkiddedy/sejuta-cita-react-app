@@ -73,8 +73,8 @@ const Books = ({booksPerPage}) => {
   }
 
   return (
-    <div className='books px-16 py-8'>
-      <div className='flex flex-row items-center justify-between mb-12 pb-4 border-b border-gray-50'>
+    <div className='books px-4 md:px-16 py-8'>
+      <div className='flex flex-col md:flex-row space-y-8 md:space-y-0 md:items-center justify-between mb-12 pb-4 border-b border-gray-50'>
         <div className='p-2 bg-white rounded-tl-lg rounded-br-lg shadow-sm max-w-max'>
           <h1 className='text-sm font-semibold'>{name}</h1>
         </div>
@@ -88,7 +88,7 @@ const Books = ({booksPerPage}) => {
       {isLoading && <p className='text-center'>Loading data from server...</p>}
 
       {!isLoading && currentBooks.length <= 0 && <p className='text-center'>No data found</p>}
-      <div className='book pb-8 grid grid-cols-5 gap-5'>
+      <div className='book pb-8 grid lg:grid-cols-5 md:grid-cols-3 gap-5'>
         { !isLoading && currentBooks && currentBooks.map((book, index) => (
           <Book 
             key={index} 

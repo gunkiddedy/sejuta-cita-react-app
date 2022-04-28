@@ -2,7 +2,7 @@ import Categories from './Categories'
 
 const Home = ({items, error, isLoading}) => {
   return (
-    <main className='px-16'>
+    <main className='px-4 md:px-16'>
       <Categories 
         items={items} 
         error={error} 
