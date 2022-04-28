@@ -12,4 +12,5 @@ const Missing = () => {
     </div>
   )
 }
+
 export default Missing
