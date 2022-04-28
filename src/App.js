@@ -8,21 +8,22 @@ import Books from './components/Books'
 import Missing from './components/Missing'
 
 const App = () => {
+
   const keyword = '/fee-assessment-categories' //fee-assessment-books?categoryId=1
   const [items, setItems] = useState([])
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
 
   const fetchCategories = async () => {
-      await fetch(keyword).then(response => response.json()).then(data => {
-        setIsLoading(false)
-        setItems(data)
-        // console.log(data)
-      }).catch(error => {
-        setError(error.message)
-        setIsLoading(false)
-        console.log(error)
-      })
+    await fetch(keyword).then(response => response.json()).then(data => {
+      setIsLoading(false)
+      setItems(data)
+      // console.log(data)
+    }).catch(error => {
+      setError(error.message)
+      setIsLoading(false)
+      console.log(error)
+    })
   }
 
   useEffect(() => {fetchCategories()}, [])
@@ -45,4 +46,5 @@ const App = () => {
     </main> 
   )
 }
+
 export default App
