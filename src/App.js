@@ -22,7 +22,7 @@ const App = () => {
     }).catch(err => {
       setError(err.message)
       setIsLoading(false)
-      console.log(JSON.parse(err.message))
+      // console.log(JSON.parse(err.message))
     })
   }
 
