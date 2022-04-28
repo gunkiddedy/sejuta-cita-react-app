@@ -10,7 +10,7 @@ const Bookmarks = () => {
   
   useEffect(() => {
     addBookmarks(JSON.parse(localStorage.getItem('bookmarks')))
-  }, [])
+  }, [myBooks, addBookmarks])
 
   return (
     <div className="bookmarks px-4 md:px-16 py-8">
