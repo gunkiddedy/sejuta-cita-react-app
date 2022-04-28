@@ -7,7 +7,6 @@ const Bookmarks = () => {
   const addBookmarks = useStore((state) => state.addBookmarks)
   const removeAllBookmarks = useStore((state) => state.removeAllBookmarks)
   const myBooks = useStore((state) => state.bookmarks)
-
   
   useEffect(() => {
     addBookmarks(JSON.parse(localStorage.getItem('bookmarks')))
@@ -23,8 +22,9 @@ const Bookmarks = () => {
         <>
           <button
             onClick={removeAllBookmarks} 
-            className="bg-red-500 py-2 px-3 text-white rounded-full text-xs font-bold">
-              Clear Bookmarks
+            className="bg-red-500 py-2 px-3 text-white rounded-full text-xs font-bold"
+          >
+            Clear Bookmarks
           </button>
           <div className='book py-8 grid lg:grid-cols-5 md:grid-cols-3 gap-5'>
             {myBooks.map((book, index) => (
@@ -39,4 +39,5 @@ const Bookmarks = () => {
     </div>
   )
 }
+
 export default Bookmarks
