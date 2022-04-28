@@ -15,7 +15,9 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   const fetchCategories = async () => {
-    await fetch(keyword).then(response => response.json()).then(data => {
+    await fetch(keyword, {
+      'content-type': 'application/json',
+    }).then(response => response.json()).then(data => {
       setIsLoading(false)
       setItems(data)
       // console.log(data)
