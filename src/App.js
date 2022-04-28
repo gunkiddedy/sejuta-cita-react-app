@@ -19,10 +19,10 @@ const App = () => {
       setIsLoading(false)
       setItems(data)
       // console.log(data)
-    }).catch(error => {
-      setError(error.message)
+    }).catch(err => {
+      setError(err.message)
       setIsLoading(false)
-      console.log(error)
+      console.log(err.message)
     })
   }
 
