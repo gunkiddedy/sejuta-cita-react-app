@@ -3,7 +3,11 @@ import Categories from './Categories'
 const Home = ({items, error, isLoading}) => {
   return (
     <main className='px-16'>
-      <Categories items={items} error={error} isLoading={isLoading} />
+      <Categories 
+        items={items} 
+        error={error} 
+        isLoading={isLoading} 
+      />
     </main>
   )
 }

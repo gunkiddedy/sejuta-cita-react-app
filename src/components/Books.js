@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import ReactPaginate from 'react-paginate'
+import { useStore } from '../store/store'
+import Book from './Book'
 
 import Search from './Search'
 
@@ -50,11 +52,19 @@ const Books = ({booksPerPage}) => {
     // console.log(filteredResults)
   }
 
+  const addBookmarks = useStore((state) => state.addBookmarks)
+
   const handleBookmarks = (book) => {
     if(bookmarks.indexOf(book) !== -1) return
     setBookmarks([...bookmarks, book])
-    localStorage.setItem('bookmarks', JSON.stringify(bookmarks))
+    const removeDup = Array.from(bookmarks.reduce((m, t) => m.set(t.id, t), new Map()).values())
+    localStorage.setItem('bookmarks', JSON.stringify(removeDup))
   }
+
+  useEffect(() => {
+    addBookmarks(JSON.parse(localStorage.getItem('bookmarks')))
+  }, [bookmarks])
+
 
   const handlePageClick = (event) => {
     const newOffset = (event.selected * booksPerPage) % books.length
@@ -64,38 +74,30 @@ const Books = ({booksPerPage}) => {
 
   return (
     <div className='books px-16 py-8'>
-      <ul className='grid grid-cols-12'>
-        {bookmarks.map(book => (
-          <li key={book.id}>{book.id}</li>
-        ))}
-      </ul>
       <div className='flex flex-row items-center justify-between mb-12 pb-4 border-b border-gray-50'>
         <div className='p-2 bg-white rounded-tl-lg rounded-br-lg shadow-sm max-w-max'>
           <h1 className='text-sm font-semibold'>{name}</h1>
         </div>
-        <Search search={search} setSearch={setSearch} handleSearch={handleSearch} />
+        <Search 
+          search={search} 
+          setSearch={setSearch} 
+          handleSearch={handleSearch} 
+        />
       </div>
+
       {isLoading && <p className='text-center'>Loading data from server...</p>}
+
       {!isLoading && currentBooks.length <= 0 && <p className='text-center'>No data found</p>}
       <div className='book pb-8 grid grid-cols-5 gap-5'>
         { !isLoading && currentBooks && currentBooks.map((book, index) => (
-          <article 
-            className='bg-white p-4 transform transition duration-500 hover:scale-110 shadow-lg' 
-            key={index}>
-            <img 
-              src={book.cover_url} 
-              className="h-40 w-full object-cover"
-              alt={book.title} />
-            <footer className="py-2 flex flex-row justify-between">
-              <h3 className="text-xs">{book.title}</h3>
-              <button onClick={() => handleBookmarks(book)} title="bookmark">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
-              </button>
-            </footer>
-          </article>
-          ))
-        }
+          <Book 
+            key={index} 
+            book={book} 
+            handleBookmarks={handleBookmarks} 
+          />
+        ))}
       </div>
+
       <div className='paginate flex flex-row justify-center mt-4'>
         {currentBooks.length >= 1 && 
           <ReactPaginate
@@ -119,6 +121,7 @@ const Books = ({booksPerPage}) => {
           />
         }
       </div>
+
     </div>
   )
 }

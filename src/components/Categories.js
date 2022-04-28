@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 const Categories = ({items, error, isLoading}) => {
   return (
     <div className="categories my-8">
-      <h1 className="text-2xl font-bold text-blue-500"></h1>
+            
       { isLoading ? (
         <p className="text-center text-xl">Loading data from server...</p>
       ) : (
@@ -25,7 +25,7 @@ const Categories = ({items, error, isLoading}) => {
           ))} 
         </article>
       )}
-      {/* if error */}
+      
       { !items && 
         <p>{error}</p>
       }
