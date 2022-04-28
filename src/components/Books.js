@@ -12,7 +12,7 @@ const Books = ({booksPerPage}) => {
   const {id, name} = useParams()
   const keyword = '/fee-assessment-books' //fee-assessment-books?categoryId=1
   const [books, setBooks] = useState([])
-  const [error, setError] = useState(null)
+  // const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [search, setSearch] = useState('')
 
@@ -22,27 +22,26 @@ const Books = ({booksPerPage}) => {
 
   const [bookmarks, setBookmarks] = useState(JSON.parse(localStorage.getItem('bookmarks')) || [])
 
-  const fetchData = async () => {
-    await fetch(`${keyword}?categoryId=${id}`)
-      .then(response => response.json())
-      .then(data => {
-        setIsLoading(false)
-        setBooks(data)
-        const endOffset = itemOffset + booksPerPage
-        console.log(`Loading books from ${itemOffset} to ${endOffset}`)
-        setCurrentBooks(data.slice(itemOffset, endOffset))
-        setPageCount(Math.ceil(data.length / booksPerPage))
-        // console.log(data)
-      }).catch(error => {
-        setIsLoading(false)
-        setError(error.message)
-        console.log(error)
-      })
-  }
-
   useEffect(() => {
-    setTimeout(()=> {fetchData()}, 750)
-  }, [id, itemOffset, booksPerPage, search])
+    const fetchData = async () => {
+      await fetch(`${keyword}?categoryId=${id}`)
+        .then(response => response.json())
+        .then(data => {
+          setIsLoading(false)
+          setBooks(data)
+          const endOffset = itemOffset + booksPerPage
+          console.log(`Loading books from ${itemOffset} to ${endOffset}`)
+          setCurrentBooks(data.slice(itemOffset, endOffset))
+          setPageCount(Math.ceil(data.length / booksPerPage))
+          // console.log(data)
+        }).catch(error => {
+          setIsLoading(false)
+          // setError(error.message)
+          console.log(error)
+        })
+    }
+    fetchData()
+  }, [id, itemOffset, search, booksPerPage])
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -63,7 +62,7 @@ const Books = ({booksPerPage}) => {
 
   useEffect(() => {
     addBookmarks(JSON.parse(localStorage.getItem('bookmarks')))
-  }, [bookmarks])
+  }, [bookmarks, addBookmarks])
 
 
   const handlePageClick = (event) => {
